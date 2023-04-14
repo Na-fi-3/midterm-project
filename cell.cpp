@@ -61,6 +61,7 @@ void RNA::set_rna(string r)
         rna = r;
 }
 
+Genome::Genome() {};
 void Genome::set_RNA(string r) { rna.set_rna(r); }
 void Genome::set_DNA(string d) { dna.set_dna(d); }
 Genome::Genome(string a, string b)
@@ -206,6 +207,7 @@ void Genome::reverse_jump(string s)
     }
 }
 
+Cell::Cell(std::vector<Genome> vg) { v = vg; }
 void Cell::read_v()
 {
     int size;
@@ -222,7 +224,7 @@ void Cell::read_v()
     for(int i = 0; i < size; i++)
         v[i] = Genome(v1[i], v2[i]);
 }
-void Cell::death_cell()
+void Cell::cell_death()
 {
     for(int i = 0; i < v.size(); i++)
     {

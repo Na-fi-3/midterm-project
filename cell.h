@@ -26,6 +26,7 @@ private:
     RNA rna;
     DNA dna;
 public:
+    Genome();
     Genome(std::string, std::string);
     void set_RNA(std::string);
     void set_DNA(std::string);
@@ -40,8 +41,9 @@ class Cell : public Genome
 private:
     std::vector<Genome> v;
 public:
+    Cell(vector<Genome> vg);
     void read_v();
-    void death_cell();
+    void cell_death();
     void big_jump(std::string, int, std::string, int);
     void small_jump(char, char, int, int);
     void reverse_jump(std::string, int);
