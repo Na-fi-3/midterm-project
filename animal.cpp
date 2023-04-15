@@ -5,7 +5,7 @@
 
 using namespace std;
 
-vector<Genome> Animal::get_v() { return v; }
+Animal::Animal() {};
 int Animal::sim_pct(Animal a)
 {
     int t = 0;
@@ -85,7 +85,7 @@ Animal Animal::operator+(Animal & a)
         return Animal(v5);
     } 
 }
-void Animal::cell_death()
+bool Animal::cell_death()
 {
     for(int i = 0; i < v.size(); i++)
     {
@@ -117,6 +117,9 @@ void Animal::cell_death()
         {
             swap(v[i], v[v.size()-1]);
             v.pop_back();
+            return 1;
         }
+        else
+            return 0;
     }
 }

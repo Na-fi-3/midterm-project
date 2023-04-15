@@ -70,6 +70,10 @@ Genome::Genome(string a, string b)
     dna.set_a(a);
     dna.set_b(b);
 }
+RNA Genome::get_rna()
+{
+    return rna;
+}
 DNA Genome::get_dna()
 {
     return dna;
@@ -207,7 +211,12 @@ void Genome::reverse_jump(string s)
     }
 }
 
+Cell::Cell() {}
 Cell::Cell(std::vector<Genome> vg) { v = vg; }
+vector<Genome> Cell::get_v()
+{
+    return v;
+}
 void Cell::read_v()
 {
     int size;
@@ -224,7 +233,7 @@ void Cell::read_v()
     for(int i = 0; i < size; i++)
         v[i] = Genome(v1[i], v2[i]);
 }
-void Cell::cell_death()
+bool Cell::cell_death()
 {
     for(int i = 0; i < v.size(); i++)
     {
@@ -253,7 +262,12 @@ void Cell::cell_death()
                 CG++;
         }
         if(count >= 5 || AT > 3*CG)
+        {
             delete this;
+            return 1;
+        }
+        else
+            return 0; 
     }
 }
 void Cell::big_jump(string s1, int n, string s2, int m)
