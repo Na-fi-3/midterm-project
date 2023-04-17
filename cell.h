@@ -46,7 +46,7 @@ public:
     Cell(std::vector<Genome> vg);
     std::vector<Genome> get_v();
     void read_v();
-    void cell_death();
+    bool cell_death();
     void big_jump(std::string, int, std::string, int);
     void small_jump(char, char, int, int);
     void reverse_jump(std::string, int);

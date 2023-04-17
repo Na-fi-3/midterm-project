@@ -82,7 +82,7 @@ int main()
             int n;
             cout << "Enter the character you want to replace: " << endl;
             cin >> a;
-            cout << "How many of " << a << "s you want to replace? " << endl;
+            cout << "How many of " << a << "'s you want to replace? " << endl;
             cin >> n;
             cout << "Enter the target character: " << endl;
             cin >> b;
@@ -122,7 +122,7 @@ int main()
             for(int i = 0; i < n; i++)
             {
                 string s1, s2;
-                cout << "Enter 2 strings to set chromosomes: " << endl;
+                cout << "Enter 2 strings to set chromosome: " << endl;
                 cin >> s1 >> s2;
                 Genome gv(s1, s2);
                 v[i] = gv;

@@ -24,13 +24,13 @@ bool DNA::set_dna(string d)
     for(int j = 0; j < d.size(); j++)
     {
         if(d[j] == 'A')
-            d2[j] = 'T';
+            d2 += 'T';
         else if(d[j] == 'T')
-            d2[j] = 'A';
+            d2 += 'A';
         else if(d[j] == 'C')
-            d2[j] = 'G';
+            d2 += 'G';
         else
-            d2[j] = 'C';
+            d2 += 'C';
     }
     b = d2;
     return 1;
@@ -87,16 +87,16 @@ void Genome::DNA_from_RNA(RNA r)
     DNA dfr;
     if(dfr.set_dna(r.get_rna()))
     {
-        cout << dfr.get_a() << endl;
-        cout << dfr.get_b() << endl;
+        cout << "DNA set from RNA: " << dfr.get_a() << endl
+            << "                  " << dfr.get_b() << endl;
     }
 }
 void Genome::small_jump(char a, char b, int n)
 {
     string R = rna.get_rna();
-    for(int i = 0, m = 0; i < R.size(), m <= n; i++)
+    for(int i = 0, m = 0; i < R.size() && m < n; i++)
     {
-        if(R[i] = a)
+        if(R[i] == a)
         {
             R[i] = b;
             m++;
@@ -105,14 +105,14 @@ void Genome::small_jump(char a, char b, int n)
     rna.set_rna(R);
     string d1 = dna.get_a();
     string d2 = dna.get_b();
-    for(int i = 0, m = 0; i < d1.size() && m <= n; i++)
+    for(int i = 0, m = 0; i < d1.size() && m < n; i++)
     {
-        if(d1[i] = a)
+        if(d1[i] == a)
         {
             d1[i] = b;
             m++;
         }
-        if(d2[i] = a)
+        if(d2[i] == a)
         {
             d2[i] = b;
             if(b == 'A')
@@ -177,14 +177,16 @@ void Genome::reverse_jump(string s)
     else
     {
         string rev;
-        for(int i = s.size()-1, j = 0; i >= 0; i--, j++)
-            rev[j] = s[i];
+        for(int i = s.size()-1; i >= 0; i--)
+        {
+            rev += s[i];
+        }
         string r = rna.get_rna();
         for(int i = 0; i < r.size() - s.size(); i++)
         {
             if(r.substr(i, s.size()) == s)
             {
-                r = r.substr(0, i) + rev + r.substr(i+s.size(), r.size() - (s.size() + i + 1));
+                r = r.substr(0, i) + rev + r.substr(i+s.size(), r.size() - (s.size() + i));
                 break;
             }
         }
@@ -197,12 +199,12 @@ void Genome::reverse_jump(string s)
         {
             if(d1.substr(i, s.size()) == s)
             {
-                d1 = d1.substr(0, i) + rev + d1.substr(i+s.size(), d1.size() - (s.size() + i + 1));
+                d1 = d1.substr(0, i) + rev + d1.substr(i+s.size(), d1.size() - (s.size() + i));
                 break;
             }
-            if(d2.substr(i, s.size()) == s)
+            else if(d2.substr(i, s.size()) == s)
             {
-                d2 = d2.substr(0, i) + rev + d2.substr(i+s.size(), d2.size() - (s.size() + i + 1));
+                d2 = d2.substr(0, i) + rev + d2.substr(i+s.size(), d2.size() - (s.size() + i));
                 sup = 1;
                 break;
             }
@@ -239,7 +241,7 @@ void Cell::read_v()
     for(int i = 0; i < size; i++)
         v[i] = Genome(v1[i], v2[i]);
 }
-void Cell::cell_death()
+bool Cell::cell_death()
 {
     for(int i = 0; i < v.size(); i++)
     {
@@ -267,13 +269,16 @@ void Cell::cell_death()
             else if(a[j] == 'G' && b[j] == 'C')
                 CG++;
         }
-        if(count >= 5 || AT > 3*CG)
+        if(count < 5 && AT <= 3*CG)
         {
-            delete this;
-            cout << "Cell deleted." << endl;
+            cout << "No cell-death detected." << endl;
+            return 0;
         }
         else
-            cout << "No cell-death detected." << endl;
+        {
+            cout << "Cell deleted." << endl;
+            return 1;
+        }
     }
 }
 void Cell::big_jump(string s1, int n, string s2, int m)
@@ -289,12 +294,12 @@ void Cell::big_jump(string s1, int n, string s2, int m)
         {
             if(d11.substr(i, s1.size()) == s1)
             {
-                d11 = d11.substr(0, i) + s2 + d11.substr(i+s2.size(), d11.size() - (s2.size() + i + 1));
+                d11 = d11.substr(0, i) + s2 + d11.substr(i+s2.size(), d11.size() - (s2.size() + i));
                 break;
             }
             if(d12.substr(i, s1.size()) == s1)
             {
-                d12 = d12.substr(0, i) + s2 + d12.substr(i+s2.size(), d12.size() - (s2.size() + i + 1));
+                d12 = d12.substr(0, i) + s2 + d12.substr(i+s2.size(), d12.size() - (s2.size() + i));
                 sup1 = 1;
                 break;
             }
@@ -313,12 +318,12 @@ void Cell::big_jump(string s1, int n, string s2, int m)
         {
             if(d21.substr(i, s2.size()) == s2)
             {
-                d21 = d21.substr(0, i) + s1 + d21.substr(i+s1.size(), d21.size() - (s1.size() + i + 1));
+                d21 = d21.substr(0, i) + s1 + d21.substr(i+s1.size(), d21.size() - (s1.size() + i));
                 break;
             }
             if(d22.substr(i, s2.size()) == s2)
             {
-                d22 = d22.substr(0, i) + s1 + d22.substr(i+s1.size(), d22.size() - (s1.size() + i + 1));
+                d22 = d22.substr(0, i) + s1 + d22.substr(i+s1.size(), d22.size() - (s1.size() + i));
                 sup2 = 1;
                 break;
             }
@@ -366,8 +371,8 @@ void Cell::reverse_jump(string s, int n)
     else
     {
         string rev;
-        for(int i = s.size()-1, j = 0; i >= 0; i--, j++)
-            rev[j] = s[i];
+        for(int i = s.size()-1; i >= 0; i--)
+            rev += s[i];
         string d1 = v[n].get_dna().get_a();
         string d2 = v[n].get_dna().get_b();
         bool sup = 0;
@@ -375,12 +380,12 @@ void Cell::reverse_jump(string s, int n)
         {
             if(d1.substr(i, s.size()) == s)
             {
-                d1 = d1.substr(0, i) + rev + d1.substr(i+s.size(), d1.size() - (s.size() + i + 1));
+                d1 = d1.substr(0, i) + rev + d1.substr(i+s.size(), d1.size() - (s.size() + i));
                 break;
             }
             else if(d2.substr(i, s.size()) == s)
             {
-                d2 = d2.substr(0, i) + rev + d2.substr(i+s.size(), d2.size() - (s.size() + i + 1));
+                d2 = d2.substr(0, i) + rev + d2.substr(i+s.size(), d2.size() - (s.size() + i));
                 sup = 1;
                 break;
             }
