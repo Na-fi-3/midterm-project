@@ -1,6 +1,5 @@
 #include <iostream>
 #include <bits/stdc++.h>
-#include "cell.h"
 #include "animal.h"
 
 using namespace std;
@@ -85,7 +84,7 @@ Animal Animal::operator+(Animal & a)
         return Animal(v5);
     } 
 }
-bool Animal::cell_death()
+void Animal::cell_death()
 {
     for(int i = 0; i < v.size(); i++)
     {
@@ -117,9 +116,9 @@ bool Animal::cell_death()
         {
             swap(v[i], v[v.size()-1]);
             v.pop_back();
-            return 1;
+            cout << "Chromosome " << i << "th deleted.";
         }
         else
-            return 0;
+            cout << "No cell-death detected.";
     }
 }

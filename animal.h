@@ -1,5 +1,5 @@
 #include <vector>
-#include <cell.h>
+#include "cell.h"
 
 class Animal : public Cell
 {
@@ -12,5 +12,5 @@ public:
     bool operator==(Animal &);
     Animal as_reprod();
     Animal operator+(Animal &);
-    bool cell_death();
+    void cell_death();
 };

@@ -1,5 +1,4 @@
 #include <iostream>
-#include "cell.h"
 #include "animal.h"
 
 using namespace std;
@@ -42,31 +41,36 @@ int main()
             cin >> r;
             cout << "Enter a string of 'A' & 'T' & 'C' & 'G' to make DNA: ";
             cin >> d;
-            g.set_RNA(r);
-            g.set_DNA(d);
-            cout << "Genome set" << endl
-                << "RNA: " << g.get_rna().get_rna() << endl
-                << "DNA: " << g.get_dna().get_a() << endl
-                << "     " << g.get_dna().get_b() << endl;
+            if(g.set_RNA(r) && g.set_DNA(d))
+            {
+                cout << "Genome set" << endl
+                    << "RNA: " << g.get_rna().get_rna() << endl
+                    << "DNA: " << g.get_dna().get_a() << endl
+                    << "     " << g.get_dna().get_b() << endl;
+            }
         }
         else if(n == 2)
         {
             string r;
             cout << "Enter a string to set RNA: " << endl;
             cin >> r;
-            g.set_RNA(r);
-            cout << "RNA set" << endl
-                << "RNA: " << g.get_rna().get_rna();
+            if(g.set_RNA(r))
+            {
+                cout << "RNA set" << endl
+                    << "RNA: " << g.get_rna().get_rna() << endl;
+            }
         }
         else if(n == 3)
         {
             string d;
             cout << "Enter a string to set DNA: " << endl;
             cin >> d;
-            g.set_DNA(d);
-            cout << "DNA set" << endl
-                << "DNA: " << g.get_dna().get_a()
-                << "     " << g.get_dna().get_b();
+            if(g.set_DNA(d))
+            {
+                cout << "DNA set" << endl
+                    << "DNA: " << g.get_dna().get_a() << endl
+                    << "     " << g.get_dna().get_b() << endl;
+            }
         }
         else if(n == 4)
         {
@@ -135,10 +139,7 @@ int main()
         }
         else if(n == 9)
         {
-            if(c.cell_death())
-                cout << "Cell dead!" << endl;
-            else 
-                cout << "No cell-death detected." << endl;
+            c.cell_death();
         }
         else if(n == 10)
         {
@@ -307,10 +308,7 @@ int main()
         }
         else if(n == 19)
         {
-            if(a.cell_death())
-                cout << "Chromosome dead!" << endl;
-            else 
-                cout << "No cell-death detected." << endl;
+            a.cell_death();
         }
         else if(n == 0)
             break;

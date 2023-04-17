@@ -7,63 +7,67 @@ void DNA::set_a(string a1) { a = a1; }
 void DNA::set_b(string b1) { b = b1; }
 string DNA::get_a() { return a; }
 string DNA::get_b() { return b; }
-void DNA::set_dna(string d)
+bool DNA::set_dna(string d)
 {
     int i = 0;
-    bool check = 1;
     while(i < d.size())
     {
         if(d[i] != 'A' && d[i] != 'T' && d[i] != 'C' && d[i] != 'G')
         {
-            cout << "invalid input";
-            check = 0;
-            break;
+            cout << "invalid input" << endl;
+            return 0;
         }
-        else
-            i++;
+        i++;
     }
-    if(i == d.size() && check == 1)
+    a = d;
+    string d2;
+    for(int j = 0; j < d.size(); j++)
     {
-        a = d;
-        string d2;
-        for(int j = 0; j < d.size(); j++)
-        {
-            if(d[j] == 'A')
-                d2[j] = 'T';
-            else if(d[j] == 'T')
-                d2[j] = 'A';
-            else if(d[j] == 'C')
-                d2[j] = 'G';
-            else
-                d2[j] = 'C';
-        }
-        b = d2;
+        if(d[j] == 'A')
+            d2[j] = 'T';
+        else if(d[j] == 'T')
+            d2[j] = 'A';
+        else if(d[j] == 'C')
+            d2[j] = 'G';
+        else
+            d2[j] = 'C';
     }
+    b = d2;
+    return 1;
 }
 
 string RNA::get_rna() { return rna; }
-void RNA::set_rna(string r)
+bool RNA::set_rna(string r)
 { 
     int i = 0;
-    bool check = 1;
     while(i < r.size())
     {
         if(r[i] != 'A' && r[i] != 'T' && r[i] != 'C' && r[i] != 'G')
         {
-            cout << "invalid input";
-            check = 0;
-            break;
+            cout << "invalid input" << endl;
+            return 0;
         }
-        else
-            i++;
+        i++;
     }
-    if(i == r.size() && check == 1)
-        rna = r;
+    rna = r;
+    return 1;
 }
 
 Genome::Genome() {};
-void Genome::set_RNA(string r) { rna.set_rna(r); }
-void Genome::set_DNA(string d) { dna.set_dna(d); }
+bool Genome::set_RNA(string r)
+{
+    if(rna.set_rna(r))
+        return 1;
+    else
+        return 0;
+}
+bool Genome::set_DNA(string d) 
+{
+    if(dna.set_dna(d))
+        return 1;
+    else
+        return 0;
+}
 Genome::Genome(string a, string b)
 {
     RNA *rna = NULL;
@@ -81,9 +85,11 @@ DNA Genome::get_dna()
 void Genome::DNA_from_RNA(RNA r)
 {
     DNA dfr;
-    dfr.set_dna(r.get_rna());
-    cout << dfr.get_a() << endl;
-    cout << dfr.get_b() << endl;
+    if(dfr.set_dna(r.get_rna()))
+    {
+        cout << dfr.get_a() << endl;
+        cout << dfr.get_b() << endl;
+    }
 }
 void Genome::small_jump(char a, char b, int n)
 {
@@ -233,7 +239,7 @@ void Cell::read_v()
     for(int i = 0; i < size; i++)
         v[i] = Genome(v1[i], v2[i]);
 }
-bool Cell::cell_death()
+void Cell::cell_death()
 {
     for(int i = 0; i < v.size(); i++)
     {
@@ -264,10 +270,10 @@ bool Cell::cell_death()
         if(count >= 5 || AT > 3*CG)
         {
             delete this;
-            return 1;
+            cout << "Cell deleted." << endl;
         }
         else
-            return 0; 
+            cout << "No cell-death detected." << endl;
     }
 }
 void Cell::big_jump(string s1, int n, string s2, int m)
